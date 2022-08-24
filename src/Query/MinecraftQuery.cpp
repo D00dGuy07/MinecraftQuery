@@ -52,7 +52,7 @@ int Handshake(DatagramSocket& socket, SocketAddress& address)
 	std::vector<char> packet = std::vector<char>();
 	header.AppendBytes(packet);
 
-	socket.Send(address, packet.data(), packet.size());
+	socket.Send(address, packet.data(), static_cast<int32_t>(packet.size()));
 	std::vector<char> response = socket.Listen(address, 128);
 
 	if (response[0] == 9)
@@ -75,7 +75,7 @@ bool MinecraftQuery::FillBasicStat(BasicStat& stat, std::string address, std::st
 	header.AppendBytes(packet);
 	SerializeBytes(packet, token);
 
-	socket.Send(_address, packet.data(), packet.size());
+	socket.Send(_address, packet.data(), static_cast<int32_t>(packet.size()));
 	std::vector<char> response = socket.Listen(_address, 128);
 
 	// Parse response
@@ -113,7 +113,7 @@ bool MinecraftQuery::FillFullStat(FullStat& stat, std::string address, std::stri
 	SerializeBytes(packet, token);
 	SerializeBytes(packet, NULL);
 
-	socket.Send(_address, packet.data(), packet.size());
+	socket.Send(_address, packet.data(), static_cast<int32_t>(packet.size()));
 	std::vector<char> response = socket.Listen(_address, 1024);
 
 	// Parse response
